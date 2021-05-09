@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+</head>
+
+<body>
+    <canvas id="c"></canvas>
+</body>
+<script>
+    pos = [0, 0]
+    drawing = false;
+    canvas = document.getElementById('c');
+    canvas.width = 1500;
+    canvas.height = 1000;
+    ctx = canvas.getContext('2d');
+
+    getPos = event => {
+        rect = canvas.getBoundingClientRect();
+        return [
+            event.clientX - rect.left,
+            event.clientY - rect.top
+        ]
+    }
+
+    canvas.onmousedown = event => {
+        drawing = true
+        pos = getPos(event)
+    }
+
+    canvas.onmouseup = () => drawing = false
+    canvas.onmousemove = event => {
+        if (!drawing) return
+        mousePos = getPos(event)
+        ctx.beginPath()
+        ctx.moveTo(...pos)
+        ctx.lineTo(...mousePos)
+        ctx.stroke()
+        pos = mousePos
+    }
+</script>
+
+</html>
